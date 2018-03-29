@@ -1,0 +1,57 @@
+<?php
+	require "conect.inc.php";
+	require "core.inc.php";
+	if (!loggedin())
+	{
+		
+		if (isset($_POST['name'])&&isset($_POST['pass'])&&isset($_POST['repass']))
+		{
+			$name = $_POST['name'];
+			$pass = $_POST['pass'];
+			$repass = $_POST['repass'];
+			$passhash = md5($pass);
+			if (!empty($name)&&!empty($pass)&&!empty($repass))
+			{
+				if ($pass != $repass)
+				{
+					echo "passwords not matching";
+				}
+				else
+				{
+					$sql = "SELECT name FROM `users` WHERE name='$uname'";
+					$query_run = mysql_query($sql);
+					if (mysql_num_rows($query_run)==1)
+					{
+						echo "user name is already registered";
+					}
+				}
+				else
+				{
+					$sql = "INSERT INTO `users` VALUES('','".mysql_real_escape_string($name)."','".mysql_real_escape_string($passhash)."');
+					if ($query_run = mysql_query($sql))
+					{
+						echo "sucessfully registered";
+					}
+					else
+					{
+						echo "failed.try again later";
+					}	
+				}
+			}
+		}
+	}
+	
+?>
+<form action="register.php" method="POST">
+name:<input type="text" name="name" value="<?php echo $name; ?>" ><br><br>
+password:<input type="password" name="pass" ><br><br>
+password again:<input type="password" name="repass" ><br><br>
+<input type="submit" value="submit">
+</form>
+
+<?php
+	if (loggedin())
+	{
+		echo "you are already registered and logged in.";
+	}
+?>

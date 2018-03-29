@@ -1,0 +1,5 @@
+.carousel .item {
+  line-height: 300px;
+  overflow: hidden;
+  min-height: 300px;
+}
